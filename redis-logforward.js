@@ -14,12 +14,16 @@ var options = require("url").parse(url);
 
 var forward = function(msg) {
   emitted += 1;
-  console.log("received: " + msg);
 
-  var payload = JSON.stringify({ "timestamp": (new Date()).toString(), "msg": msg.toString() });
-  console.log("sending: " + payload);
+  msg = msg.toString().trim();
+  console.log("redis says: " + msg);
 
-  req.write(payload + "\n");
+  if (m = msg.match(/DB 0: (\d+) keys/)) {
+    var payload = JSON.stringify({ "timestamp": (new Date()).toString(), "keys": m[1] });
+    console.log("forwarding to log endpoint: " + payload);
+
+    req.write(payload + "\n");
+  }
 }
 
 console.log("launch_redis");
