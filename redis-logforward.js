@@ -24,7 +24,7 @@ var forward = function(msg) {
 
 console.log("launch_redis");
 
-var redis = require('child_process').spawn('redis-server');
+var redis = require('child_process').spawn('bash', [ '-c', 'echo port $PORT | redis-server -' ]);
 
 process.on('SIGTERM', function () {
   console.log("sending SIGTERM to redis");
